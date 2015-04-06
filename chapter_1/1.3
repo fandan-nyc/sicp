@@ -1,0 +1,19 @@
+#lang racket
+;define a procedure that takes three numbers as arguments and 
+;returns the sume of the squares of the two larger numbers 
+
+;cal square
+(define (square x) ( * x x))
+; sum of the square of three numbers
+(define (square_sum x y z)( + (square x) (square y) (square z)))
+; return the small int
+(define (small x y)( if(< x y) x y ))
+; return the smallest of the three
+(define (smallest x y z ) ( small (small x y) z))
+; return diff between sum of square of three and the square of the smallest
+(define (square_sum_of_larger_two x y z)( - (square_sum  x y z) (square (smallest x y z ))))
+; tests 
+(square_sum_of_larger_two 3 4 5) ; 41
+(square_sum_of_larger_two 3 4 6) ; 52
+(square_sum_of_larger_two 3 3 3) ; 18
+(square_sum_of_larger_two 3 3 4) ; 25

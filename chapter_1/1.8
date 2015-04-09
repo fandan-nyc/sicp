@@ -1,0 +1,16 @@
+#lang racket
+; newton method to calculate sqrt root
+(require racket/trace)
+(define (abs x)(cond (( < x 0)(- 0 x))(else x)))
+(define (square x) (* x x))
+(define (cube x ) (* x x x ))
+(define (goodEnough guess n ) (< (abs (- (iterate guess n) guess)) (* guess 0.001)) )
+(define (iterate input n)( / (  + (/ n (square input)) (* 2 input)) 3))
+(define guess 1)
+(define (cuberoot_helper guess n ) ( if (goodEnough guess n) guess (cuberoot_helper (iterate guess n) n) ) )
+(define (cuberoot n) (cuberoot_helper guess n))
+;(trace cuberoot)
+(cuberoot 3.0)
+(cuberoot 27.0)
+(cuberoot 2.0)
+(cuberoot 100.0)

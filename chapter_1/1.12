@@ -1,0 +1,14 @@
+
+(require racket/trace)
+;pascal triangle 
+(define (pascal row col)
+  (cond (( < row col) 0)
+        ((= 1 col) 1)
+        ((= col row) 1)
+        (  (+ ( pascal (- row 1) (- col 1)) ( pascal (- row 1) col)))
+  ))
+(pascal 1 1)
+(pascal 3 4)
+(pascal 4 2)
+(pascal 5 3)
+

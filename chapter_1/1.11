@@ -1,0 +1,31 @@
+
+;f(n) = n if n < 3
+;f(n) = f(n-1) + f(n-2) * 2 + f(n-3) * 3 if n >= 3 
+(require racket/trace)
+(define (f-recur x)
+  (if (< x 3) x 
+               ( + (f-recur (- x 1)) ( * 2 (f-recur ( - x 2))) (* 3 ( f-recur ( - x 3))))))
+
+(trace f-recur)
+(f-recur 1)
+(f-recur 2) 
+(f-recur 3) 
+(f-recur 4)
+
+
+ (define (f-iter-helper x1 x2 x3 count x)
+   (define (f-func x1 x2 x3)
+        ( + x1 ( * x2 2) (* x3 3)))
+    ( if  ( = count x) x1
+          (f-iter-helper (f-func x1 x2 x3 ) x1 x2  (+ 1 count) x))
+    )
+
+(define (f-iter x)
+  (if (< x 3) x (f-iter-helper 2 1 0 2 x)))
+
+(trace f-iter-helper)
+(f-iter 1)
+(f-iter 2)
+(f-iter 3)
+(f-iter 4)
+

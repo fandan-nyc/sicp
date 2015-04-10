@@ -1,0 +1,4 @@
+here is the trade off. 
+If you use recursive, you need to use more steps. However, each carried over value is relatively small
+if you use iterative, you need to cal a huge number which is used to check the mod and the huge number will slow things down also. 
+

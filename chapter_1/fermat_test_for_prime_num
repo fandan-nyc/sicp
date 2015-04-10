@@ -1,0 +1,36 @@
+#lang racket
+
+;fermat test
+;recursive 
+(require racket/trace)
+(define (square x)
+  (* x x))
+
+
+(define (power-n-module-recur a power n)
+  ( cond (( = power 0) 1 )
+         (( = power 1) (remainder a n))
+         ((even? power )  (remainder ( square (power-n-module-recur a (/ power 2) n)) n))
+         (( not (even? power)) ( remainder ( * a (power-n-module-recur a  ( - power 1) n)) n))))
+(trace power-n-module-recur)
+;(power-n-module-recur 5 81 492)
+
+;iteration partially
+(define (power-n-module-half-iter a power n)
+  ( cond ((= power 0) 1)
+         ((even? power) (power-n-module-half-iter (square a) (/ power 2) n))
+         ( else ( remainder ( * a (power-n-module-half-iter a ( - power 1) n)) n))
+         )
+  )
+(trace power-n-module-half-iter)
+;(power-n-module-half-iter 5 81 492)
+
+
+
+(define (fermat-test n)
+  (define (try a)
+    ( = (power-n-module-half-iter a n n) a))
+  (try (+ 1 (random (- n 1)))))
+
+( fermat-test 8)
+

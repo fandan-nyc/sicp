@@ -1,0 +1,9 @@
+(require racket/trace)
+; greatest common divisor 
+; gcd(a,b)=  gcd(b,r) where r =  a mod b
+(define (gcd-recur a b)
+  (cond (( = b 0 ) a)
+        ( else ( gcd-recur b (modulo a b )))))
+(trace gcd-recur)
+(gcd-recur 206 40)
+

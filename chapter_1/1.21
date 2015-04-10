@@ -1,0 +1,25 @@
+#lang racket
+;smallest divisor 
+
+(define (square x)
+  (* x x ))
+
+(define (smallest-divisor x )
+  (define (find-divisor input n)
+  ( cond (( > (square  input) n) n)
+         (( = (remainder n input) 0) input)
+         (else (find-divisor (+ 1 input ) n))))
+  (find-divisor  2 x))
+
+;(smallest-divisor 4)
+;(smallest-divisor 7)
+;(smallest-divisor 11)
+;(smallest-divisor 121)
+;(smallest-divisor 33)
+
+(smallest-divisor 199)
+(smallest-divisor 1999)
+(smallest-divisor 19999)
+;199
+;1999
+;7

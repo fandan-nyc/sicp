@@ -1,0 +1,64 @@
+#lang racket
+
+(require racket/trace)
+; sum a to b
+(define (sum-int a b)
+  ( if ( >  a b)
+       0
+       ( + a (sum-int (+ 1 a) b ))
+       )
+  )
+
+; sum the cube of a to cube of b
+(define (cube a)
+  (* a a a )
+  )
+(define (sum-cube a b)
+  (if ( > a b )
+      0
+      ( + (cube a) (sum-cube ( + 1 a ) b))
+      )
+  )
+(sum-cube 1 10)
+
+; calc pi/8
+; 1/(1 * 3) + 1 / (3 * 5) + 1 / (5 * 7) ...
+(define (pi-sum a b)
+  (if ( > a b)
+      0
+      ( + ( / 1.0 (* a (+ a 2)))
+          (pi-sum (+ 4 a ) b)
+          )
+      )
+  )
+(pi-sum 1 1000000)
+;;; 
+(define ( sum term a next b)
+  ( if ( > a b)
+       0
+       ( + ( term a) (sum term (next a) next b)
+           )
+       )
+  )
+
+; sum of interger
+(define (sum-next a)
+  ( + a 1)
+  )
+(define ( identity a)
+  a)
+; sum-integer can be expressed as 
+(sum identity 1 sum-next 100)
+; sum-cube can be expressed as 
+(sum cube 1 sum-next 10)
+; pi-sum can be expressed as 
+(define (pi-sum-next a)
+  ( + 4 a)
+  )
+(define (pi-sum-term a)
+  ( / 1.0 (* a (+ a 2)))
+  )
+( sum pi-sum-term 1 pi-sum-next 10000)
+
+
+

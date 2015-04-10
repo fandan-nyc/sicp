@@ -1,0 +1,18 @@
+; rewrite the sum func to make it iterative, rather than recursive
+
+(define (sum term a next b)
+  (define (iter a result)
+  (if ( > a b)
+      result
+      ( iter (next a) ( + result (term a)))
+      )
+    )
+  (iter a 0)
+  )
+
+(define (term identity a)
+  a)
+(define (inc a )
+  ( + a 1)
+  )
+(sum identity 1 inc 10)

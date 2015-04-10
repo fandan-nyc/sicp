@@ -1,0 +1,18 @@
+; fast multi
+(require racket/trace)
+( define (fast-multi a b) 
+   (define (double x)
+     (* x 2))
+   (define (half x)
+     (/ x 2))
+   (cond ((or (= a 0) (= 0 b)) 0)
+         ( (= b 1) a)
+         ((even? b) ( fast-multi (double a) ( half b)))
+         ( else ( +  a  (fast-multi a ( - b 1))))))
+(trace fast-multi)
+
+(fast-multi 2 4)
+(fast-multi 1 4)
+(fast-multi 4 1)
+(fast-multi 2 5)
+(fast-multi 2 10)

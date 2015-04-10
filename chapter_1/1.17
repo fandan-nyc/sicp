@@ -1,0 +1,15 @@
+; recursive 
+(require racket/trace)
+( define (fast-multi-recur a b) 
+   (define (double x)
+     (* x 2))
+   (define (half x)
+     (/ x 2))
+   (if (= b 1) a ( if (even? b) (double( fast-multi-recur a ( half b)))  ( + a (fast-multi-recur a (- b 1))))))
+(trace fast-multi-recur)
+
+(fast-multi-recur 2 4)
+(fast-multi-recur 1 4)
+(fast-multi-recur 4 1)
+(fast-multi-recur 2 5)
+(fast-multi-recur 2 10)

@@ -1,0 +1,36 @@
+#lang racket
+;1.3.3 finding roots of equations by the half-interval method 
+(require racket/trace)
+(define (close-enough? a b)
+  (< (abs (- a b)) 0.0001)
+  )
+
+(define (search f neg pos)
+  (let ((avg ( / (+ neg pos ) 2.0))) 
+    (if ( close-enough? neg pos)
+      avg
+      ( let ((mid-point (f avg)))
+      (cond ((= mid-point 0) avg)
+            ((> mid-point 0) (search f  neg avg))
+            ((< mid-point 0) (search f avg pos))
+            )
+      )
+  )
+  )
+  )
+         
+(define (half-interval f a b)
+  (let ((fa (f a)) (fb (f b)))
+    (cond (( = fa 0) a)
+        ( ( = fb 0) b)
+        ( ( < (* fa fb) 0)
+          (if ( > fa fb ) (search f b a) ( search f a b))
+          )
+        (else (error " no solution between " a b))
+        )
+  )
+ )
+(trace search)
+
+(half-interval sin 2.0 4.0)
+(half-interval (lambda (x) ( - (* x x x ) (* 2 x) 3)) 1.0 2.0)

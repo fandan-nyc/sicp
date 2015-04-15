@@ -1,0 +1,32 @@
+#lang racket
+(require racket/trace)
+ 
+(define (composite f g)
+  (lambda (x) ( f ( g x)) )
+  )
+
+(define (repeat-recur f n)
+  (if ( = n 1)
+      f
+      (composite f (repeat-recur f ( - n 1) )
+                 )
+      )
+  )
+(define (repeat-iter f n)
+  (define (helper f result n)
+    (if ( = n 0)
+        result
+        (helper f (composite f result) ( - n 1) )
+        )
+    )
+  (helper f f 1)
+  )
+
+(define dx 0.00001)
+(define (smooth f)
+  (lambda (x) ( / ( + (f x) (f (+ x dx)) (f (- x dx))) 3.0) )
+  )
+
+(define (n-fold-smooth f n)
+ (repeat-iter (smooth f) n)
+  )

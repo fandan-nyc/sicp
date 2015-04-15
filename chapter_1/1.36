@@ -1,0 +1,20 @@
+#lang racket
+; 1.36 x^x = 10000
+; x =  log 10000 / log x
+; x = (log 10000 / log x + x)/2
+(require racket/trace)
+(define tolerance 0.00001)
+(define (close-enough? a b)
+  ( < (abs (- a b)) tolerance)
+  )
+(define (fixing-point f x)
+  (let ((next (f x)))
+    (if (close-enough? x next)
+        next
+        (fixing-point  f next ))
+    )
+  )
+(trace fixing-point)
+(fixing-point (lambda (x)  (/ (log 10000) (log x))) 5)
+(fixing-point (lambda (x)  (/ ( + x (/ (log 10000) (log x))) 2.0)) 5)
+; use the second method ( 8 steps ) is much faster than the first method (23 steps)

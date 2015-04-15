@@ -1,0 +1,36 @@
+(define tolerance 0.00001)
+(define (close-enough? a b)
+  ( < ( abs ( - a b )) tolerance)
+  )
+
+(define (fix-point f )
+  ( define (helper f guess)
+     ( if (close-enough? (f guess) guess)
+          guess
+          (helper f (f guess))
+          )
+     )
+  (helper f 1.0)
+  )
+
+(define dx 0.00001)
+(define (derive f)
+  ( lambda (x) (/ ( - (f (+ x dx)) (f x) ) dx)
+     )
+  )
+
+(define (newton-transform f)
+  (lambda (x) ( - x
+                  ( / (f x) ((derive f) x))
+                  )
+    )
+  )
+(define (newton-method f)
+  (fix-point (newton-transform f))
+   )
+; to solve x^3 + a * x^2 + b * x + c
+(define (cubic a b c)
+  (newton-method (lambda (x) ( + ( * x x x) (* a x x ) (* b x) c)))
+                 )
+(cubic 1 2 3)
+

@@ -1,0 +1,39 @@
+#lang racket
+(require racket/trace)
+; average-damp
+(define (average-damp f)
+  (lambda (x) ( / ( + x (f x)) 2.0))
+  )
+
+(define (square x)
+  (* x x)
+  )
+((average-damp square) 10)
+; should be (100 + 10) /2 = 55
+
+(define tolerance 0.00001)
+(define (close-enough? x y)
+  (< (abs ( - x y)) tolerance)
+    )
+(define ( fix-point f )
+  (define (helper guess)
+    ( if ( close-enough? (f guess ) guess)
+         guess 
+         (helper (f guess))
+         )
+    )
+  (helper 1.0)
+  )
+
+(define (sqrt x)
+  (fix-point (average-damp (lambda (y) (/ x y) )))
+  )
+(sqrt 10)
+
+(define (cube-root x)
+  (fix-point (average-damp (lambda (y) (/ x (* y y))))
+             )
+  )
+(cube-root 1000)
+(cube-root 27)
+(cube-root 9)

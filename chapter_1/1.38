@@ -1,0 +1,49 @@
+#lang racket
+
+(require racket/trace)
+
+; recursive
+ (define ( helper f g n k)
+    (let (
+          (fk (f n))
+          (gk (g n))
+         )
+   (if (= n k)
+      0
+      (/ fk ( + gk (helper f g (+ n 1) k)))
+      )
+    )
+    )
+
+(define (cont-frac-recur f g k)
+  (helper f g 1.0 k)
+  )
+
+; iterative 
+; calc from the last one
+(define (cont-frac-iter f g k)
+  (iter-helper f g k 0.0)
+  )
+
+(define (iter-helper f g k result)
+  (let ((fk (f k))
+        (gk (g k))
+        )
+    (if ( = k 0)
+        result
+        (iter-helper f g (- k 1) (/ fk ( + gk result)))
+    )
+  )
+  )
+        
+
+
+(define (g k)
+  (cond ( ( = (modulo k 3) 2) (* 2 ( / (+ k 1) 3)))  
+        ( else 1)
+        )
+  )
+(trace iter-helper)
+
+(cont-frac-iter (lambda (i) 1) g 100)  
+;(cont-frac-recur (lambda (i) 1) g 100)

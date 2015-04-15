@@ -1,0 +1,52 @@
+(require racket/trace)
+(define tolerance 0.00001)
+(define (close-enough? a b)
+  ( < ( abs ( - a b)) tolerance)
+  )
+;iterative
+(define (cont-frac-helper-iter f g first-guess k)
+  (let 
+        ((next ( / (f k) (+ (g k) first-guess))))
+    (if (=  k 0)
+        first-guess
+        ( if (close-enough? first-guess next)
+             ( / ( + first-guess next ) 2.0)
+             (cont-frac-helper-iter f g next (- k 1))
+        )
+    )
+  )
+  )
+;iterative without fixing point
+(define (cont-iter n d k)
+  (define (cont-helper i result)
+  (if ( = i 0)
+      (/ (n i) ( + (d i) result))
+      (cont-helper (- i 1)       (/ (n i) ( + (d i) result)))
+      )
+    )
+  (cont-helper k 0.0)
+  )
+(cont-iter (lambda (i) 1.0) (lambda (i) 1.0) 100)
+
+  
+(define (cont-frac f g k)
+  (cont-frac-helper-iter f g 1 k)
+  )
+(trace cont-frac-helper-iter)
+;(cont-frac (lambda (i) 1.0) (lambda (i) 1.0) 1000)
+
+; recursive
+(define first-guess-recur 1)
+(define (cont-frac-recur f g k)
+  (let ( (fk (f k))
+         (gk (g k))
+         )
+   (if (= k 0)
+      0
+      (/ fk ( + gk (cont-frac-recur f g (- k 1))))
+      )
+    )
+  )
+(cont-frac-recur (lambda (i) 1.0) (lambda (i) 1.0) 100)
+
+

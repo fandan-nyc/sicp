@@ -1,0 +1,27 @@
+ 
+(define (composite f g)
+  (lambda (x) ( f ( g x)) )
+  )
+
+(define (square x)
+  ( * x x)
+  )
+
+(define (repeat-recur f n)
+  (if ( = n 1)
+      f
+      (composite f (repeat-recur f ( - n 1) )
+                 )
+      )
+  )
+(define (repeat-iter f n)
+  (define (helper f result n)
+    (if ( = n 0)
+        result
+        (helper f (composite f result) ( - n 1) )
+        )
+    )
+  (helper f f 1)
+  )
+((repeat-iter square 2) 5)
+((repeat-recur square 2) 5)

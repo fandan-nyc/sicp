@@ -1,0 +1,18 @@
+(require racket/trace)
+(define zero
+  (lambda (f) (lambda (x) x)))
+
+(define (add-1 n)
+  (lambda (f) (lambda (x) (f ((n f) x)))))
+
+(define one
+  (lambda (f) ( lambda (x) (f x))
+    )
+  )
+(define two
+  (lambda (f) ( lambda (x) (f( f x))))
+  )
+
+((one (lambda (t) ( * 4  t)))  2);8 
+((two (lambda (t) ( + 10 t))) 11);31
+

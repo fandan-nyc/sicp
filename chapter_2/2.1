@@ -1,0 +1,32 @@
+;2.1 
+(define (gcd a b)
+  (if ( = (remainder a b) 0)
+      b
+      (gcd b (remainder a b))
+      )
+  )
+
+(define (make-rat a b)
+  (define g (abs (gcd a b)))
+    (  let((a-abs-over-g ( / (abs a) g))
+        (b-abs-over-g ( / (abs b) g)))
+    (if (> ( * a b) 0)
+        (cons a-abs-over-g b-abs-over-g)
+        (cons a-abs-over-g (- b-abs-over-g)) 
+     )
+   ))
+
+(define (numer  x) ( car x))
+(define (denom  x) ( cdr x))
+(define (print-rat x)
+  (newline)
+  (display (numer x))
+  (display '/)
+  (display (denom x))
+  )
+
+(print-rat (make-rat  1 -2))
+(print-rat (make-rat -1 -2))
+(print-rat (make-rat -1 2))
+(print-rat (make-rat 1 2))
+

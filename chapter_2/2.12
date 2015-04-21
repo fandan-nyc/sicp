@@ -1,0 +1,28 @@
+
+(define (make-interval-by-percent a b)
+  (cons a b)
+  )
+
+(define (operate-two-ele a)
+  (lambda (f) (f (car a) (cdr a))
+  )
+)
+(define (upper-bound a)
+  ((operate-two-ele a) (lambda (a b) ( + a (* a b)))
+                       ))
+                       
+(define (lower-bound a)
+  ((operate-two-ele a) (lambda ( a b) ( - a (* a b))))
+  )
+(define (get-center a )
+  (car a)
+  )
+(define (get-percent a)
+  (cdr a)
+  )
+
+(define x (make-interval-by-percent 50 0.23))
+(get-center x)
+(get-percent x)
+(upper-bound x)
+(lower-bound x)

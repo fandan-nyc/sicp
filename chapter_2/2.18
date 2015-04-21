@@ -1,0 +1,9 @@
+(define (reverse list)
+  (define (helper list result)
+    (if (null? list)
+        result
+        (helper (cdr list) (cons  (car list) result))
+        ))
+    (helper list null)
+    )
+(reverse (list 1 2 3 4 5))

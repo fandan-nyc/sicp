@@ -1,0 +1,22 @@
+
+(define (len-recur x)
+  (if ( null? x)
+      0
+      ( + 1 (len-recur (cdr x)))
+      )
+  )
+(len-recur null) ; 0
+(len-recur (list null)); 1
+
+(define (len-iter x)
+  (define (helper x result)
+    (if (null? x)
+        result
+        (helper (cdr x) ( + result 1))
+        )
+    )
+  (helper x 0)
+  )
+(len-iter null)
+(len-iter (list null))
+(len-iter (list 1 2 3 4))

@@ -1,0 +1,23 @@
+
+
+(define (list-ref-iter x n)
+  (if ( = n 0)
+      (car x)
+      (list-ref-iter (cdr x) (- n 1))
+      )
+  )
+(list-ref-iter (list 1 2 3 4 5 6 7 8 9) 5)
+; to prove this is recursive, the helper func is put outside
+
+(define (list-ref-recur x n)
+  (define (recur-helper x n)
+  (if ( = n 1)
+      (cdr x)
+      (cdr (recur-helper x (- n 1 )))
+      )
+  )
+  (car (recur-helper x n))
+  )
+(list-ref-recur (list 1 2 3 4 5 6) 3)
+
+     

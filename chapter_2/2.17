@@ -1,0 +1,16 @@
+(define (last-pair list)
+  (if (null? list)
+      list
+      (if (null? (cdr list))
+          list
+          (last-pair (cdr list))
+          )
+  )
+  )
+(trace last-pair)
+(last-pair (list 1 2))
+(last-pair (list 1 2 3 4 5))
+(last-pair (list 1 )) 
+(last-pair (list ))
+(last-pair null)
+

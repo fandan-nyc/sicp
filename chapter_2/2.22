@@ -1,0 +1,24 @@
+; the bug comes from that we cons the last elememt in front of the result
+; also, (cons 1 (list 2 3)) -> (list 1 2 3), however, (cons (list 1 2 3) 1) -> ( (1 2 3) 1)
+;here is how to fix that
+
+(define (reverse item)
+  (define (helper item result)
+    (if(null? item)
+       result
+       (helper (cdr item) (cons (car item) result)))
+    )
+  (helper item (list))
+  )
+
+(define (square-list items)
+  (define (iter item result)
+    (if(null? item)
+       result
+       (iter (cdr item) (cons (* (car item) (car item)) result))
+       )
+    )
+  (reverse (iter items (list)))
+  )
+
+ (square-list (list 1 2 3 4 5))

@@ -1,0 +1,8 @@
+(define (for-each  operation item)
+  (operation (car item))
+  (cond ((not (null? (cdr item)))
+      (for-each  operation (cdr item))
+      )))
+(for-each (lambda(x) (display x) (newline)) (list 1 2 3 4 5))
+'(next )
+(for-each (lambda(x) (display (+ 4 x))(newline)) (list 1 2 3 4))

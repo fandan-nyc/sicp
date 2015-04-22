@@ -1,0 +1,26 @@
+
+(define (map items operation)
+  (if(null? items)
+     null
+     (cons (operation (car items))
+           (map (cdr items) operation))
+     )
+  )
+
+(define (square-list item)
+  (map item (lambda(x) ( * x x))))
+(square-list (list 1 2 3 4))
+(square-list null)
+(square-list (list ))
+
+(define  (square-list-new item)
+  (if (null? item)
+      null
+      ( cons (* (car item ) (car item))
+             (square-list-new (cdr item))
+             )
+      )
+  )
+(square-list-new (list 1 2 3 4 5))
+(square-list-new null)
+(square-list-new (list ))

@@ -10,9 +10,14 @@
     )
   )
 (define two
-  (lambda (f) ( lambda (x) (f( f x))))
+  (lambda (f) ( lambda (x) (f ( f x))))
   )
 
 ((one (lambda (t) ( * 4  t)))  2);8 
 ((two (lambda (t) ( + 10 t))) 11);31
 
+
+(define (add x y)
+  (lambda(f) (lambda (w) ((y f) ((x f) w)))))
+
+(((add one two ) (lambda(t) (+ 4 t)) ) 1); 13

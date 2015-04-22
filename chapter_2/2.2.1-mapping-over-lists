@@ -1,0 +1,23 @@
+(define (scale-list items factor)
+  (if(null? items)
+     null 
+     (cons ( * ( car items) factor )
+           (scale-list (cdr items) factor)
+           )))
+(scale-list (list 1 2 3 4 5) 10)
+
+(define (map items operation)
+  (if(null? items)
+     null
+     (cons (operation (car items))
+           (map (cdr items) operation))
+     )
+  )
+(map (list 1 2 3 4) (lambda(x) (* 10 x)))
+(define (scale-list-new items factor)
+  (if ( null? items)
+      null
+      (map items (lambda(x) (* x factor))))
+  )
+(scale-list-new (list 1 2 3 4 5) 3)
+

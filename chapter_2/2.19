@@ -1,0 +1,29 @@
+
+(define us-coins ( list  1 25 50  10 5 ))
+(define uk-coins ( list 100 50 20 10 5 2 1 0.5))
+
+(define (len x)
+  (define(helper x result) 
+    (if( null? (cdr x))
+       ( + result 1)
+       (helper (cdr x) (+ result 1))
+       )
+    )
+  (if (null? x)
+      0
+      (helper x 0)
+  )
+  )
+
+  
+(define (cc total-amount coins)
+  (cond ((= total-amount 0) 1)
+        ((or (< total-amount 0) ( = (len coins) 0)) 0)
+        (else 
+         ( + ( cc (- total-amount (car coins)) coins)
+             ( cc    total-amount (cdr coins))))
+         )
+        )
+(cc 100 us-coins)
+; the order does not matter 
+; however, if we start from the small number, the process will be slower

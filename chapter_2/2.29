@@ -1,0 +1,77 @@
+#lang racket
+(require racket/trace)
+;2.29
+(define (make-mobile x y)
+  ( list x y)
+  )
+(define (make-branch x y)
+  (list x y))
+
+;(a)
+(define (left-branch x)
+  (car x))
+(define (right-branch x)
+  (car (cdr x)))
+(define (branch-length x)
+  (car x))
+(define (branch-structure x)
+  (car (cdr x)))
+;(b)
+; calc the total weight of a mobile
+(define (branch-weight x)
+  (let ((s (branch-structure x)))
+    (if (pair? s)
+        (total-weight s)
+        s)))
+
+(define (total-weight x)
+    ( + (branch-weight (left-branch x))
+        (branch-weight (right-branch x))
+        )
+  )
+
+(define level-1-mobile (make-mobile (make-branch 2 1) 
+                                     (make-branch 1 2))) 
+ (define level-2-mobile (make-mobile (make-branch 3 level-1-mobile) 
+                                     (make-branch 9 1))) 
+ (define level-3-mobile (make-mobile (make-branch 4 level-2-mobile) 
+                                     (make-branch 8 2))) 
+(total-weight level-1-mobile)
+(total-weight level-2-mobile)
+(total-weight level-3-mobile)
+
+;(c) balanced
+(define (is-mobile branch)
+  (pair? (branch-structure branch)))
+
+
+(define (branch-torque branch)
+  ( * (branch-length branch)(branch-weight branch))
+  )
+
+(define (balanced-branch branch)
+  (if(is-mobile branch)
+     (balanced-mobile( branch-structure branch))
+     #t)
+  )
+
+(define (balanced-mobile mobile)
+  (and (= (branch-torque (left-branch mobile))
+          (branch-torque (right-branch mobile))
+          )
+      (balanced-branch (left-branch mobile))
+      (balanced-branch (right-branch mobile))
+      )
+  )
+                       
+ (balanced-mobile level-1-mobile) 
+ (balanced-mobile level-2-mobile) 
+ (balanced-mobile level-3-mobile) 
+ (balanced-mobile (make-mobile (make-branch 10 1000) 
+                         (make-branch 1 level-3-mobile)))            
+       
+;(d)
+; the list is (cons a ( cons b null))
+; change the selelctors and constructors
+; also, when judging the structure to be a pair or not
+

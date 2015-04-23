@@ -1,0 +1,28 @@
+(define (reverse x)
+  (define (helper x result)
+    (if(null? x)
+       result 
+       (helper (cdr x) (cons (car x) result))
+       ))
+    (helper x (list))
+  )
+
+(define (deep-reverse x)
+  (define (helper x result)
+    (if (null? x)
+        result
+        (if (pair? (car x))
+            (helper (cdr x) (cons (reverse (car x)) result))
+            (helper (cdr x) (cons (car x) result))
+            )
+        )
+    )
+  (helper x (list))
+  )
+; another solution
+ (define (deep-reverse x) 
+   (if (pair? x) 
+       (append (deep-reverse (cdr x))  
+               (list (deep-reverse (car x)))) 
+       x)) 
+(deep-reverse (list 1 2 3 (list 7 8 9)))

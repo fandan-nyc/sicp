@@ -1,0 +1,18 @@
+;2.30
+(define (square-tree x)
+  (cond ((null? x) null)
+         ((not (pair? x)) ( * x x))
+         (else ( cons (square-tree (car x)) (square-tree (cdr x))))
+         )
+  )
+(define (square-tree-map x)
+  (map (lambda (x) (if (pair? x)
+                       (square-tree-map x)
+                       (* x x)))
+       x)
+  )
+
+                                                        
+(define test (list 1 2 3 4 (list 5 6 (list 7 8))))
+(square-tree test)
+(square-tree-map test)

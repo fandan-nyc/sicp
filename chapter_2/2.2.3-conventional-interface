@@ -1,0 +1,85 @@
+#lang racket
+;2.2.3 
+; conventional interface 
+
+(define (sum-odd-square tree)
+  (cond ((null? tree) 0)
+        ((not (pair? tree)) 
+         (if ( odd? tree )
+             (* tree tree )
+             0)
+         )
+        (else ( + (sum-odd-square (car tree))
+                  (sum-odd-square (cdr tree))))))
+(sum-odd-square (list 1 2 3 (list 4 5 (list 6 7 ))))
+; 1 + 9 + 25 + 49
+
+;slow fib
+(define (fib x)
+  (define (fib-helper t a b)
+    (cond (( = t x ) a )
+          (else (fib-helper (+ t 1 ) ( + a b ) a))
+          )
+    )
+  (fib-helper 1 1 0)
+  )
+  
+(define (even-fibs n)
+  (define (next k)
+    (if ( > k n)
+        null
+        (let ((f ( fib k)))
+          (if (even? f )
+              (cons f (next (+ k 1)))
+              (next (+ k 1))
+              )
+          )
+        )
+    )
+  (next 1)
+  )
+(even-fibs 10)
+; the two processes are similar 
+; enumerate, filter, map, accumulate 
+( define (filter predict seq)
+   (cond ((null? seq) null)
+         ((predict (car seq))
+          (cons ( car seq) (filter predict (cdr seq))))
+         (else (filter predict (cdr seq))))
+   )
+(define (accumulate op init seq)
+  (if (null? seq)
+      init 
+      (op (car seq) (accumulate op init (cdr seq)))))
+(define (enumerate low high)
+  (if ( > low high)
+      null
+      (cons low (enumerate ( + low 1) high )))
+  )
+(define (enumerate-tree tree)
+  (cond ((null? tree) (list ))
+        ((pair? tree) (append (enumerate-tree (car tree)) (enumerate-tree (cdr tree))))
+        (else (list tree))
+  ))
+(enumerate-tree (list 1 2 (list 3 4 (list 5)) 6 7))
+; reform sum-odd-square 
+(define (sum-odd-square-reform seq)
+  (accumulate + 0 (map (lambda (x) (* x x) ) (filter odd? (enumerate-tree seq)))
+  ))
+(sum-odd-square-reform (list 1 2 3 (list 4 5 (list 6 7 ))))
+
+;reform even-fibs 
+(define (even-fibs-reform seq) 
+  (accumulate cons null (filter even? (map fib (enumerate 1 seq)))))
+(even-fibs-reform 10)
+
+;easy way to write list-fib-squares n 
+(define (list-fib-square n)
+  (accumulate cons null (map (lambda (x) (* x x )) (map fib (enumerate 1 n)))))
+(list-fib-square 10)
+
+;easy way to get the product-of-squares-of-odd-elements sequenece 
+(define (prod-of-squares-of-odd-ele sequence)
+  (accumulate * 1 (map (lambda (x) (* x x)) (filter odd? sequence)))
+  )
+(prod-of-squares-of-odd-ele (list 1 2 3 4 5 ))

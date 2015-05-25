@@ -1,0 +1,18 @@
+; mapping over trees 
+(define (scale-tree tree factor)
+  (cond ((null? tree) null)
+        ((not (pair? tree)) ( * tree factor ))
+        (else ( cons ( scale-tree (car tree) factor)
+                     ( scale-tree (cdr tree) factor)))
+        )
+  )
+(scale-tree ( list 1 ( list  2 3 (list  4 5  (list 6 7))  8)) 5)
+ 
+(define (scale-tree-2 tree factor)
+  (map (lambda (subtree)
+         (if (pair? subtree) 
+             (scale-tree-2 subtree factor)
+             (* factor subtree)))
+       tree))
+(scale-tree-2 (list 1 2 ( list 3 4  (list 5 6)) 7) 10)
+

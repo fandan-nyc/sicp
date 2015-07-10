@@ -1,0 +1,62 @@
+#lang racket
+; nested mapping 
+; given positive integer n, for each positive interger i <= n, get all the ordered pairs (j, i) where 
+; 1 <= j < i <= n, that j + i is a prime
+(define (enumerate-interval start end)
+    (if(> start end)
+       null
+       (cons start (enumerate-interval ( + start 1) end))
+    ))
+(define (accumulate opt init sequence)
+  (if(null? sequence)
+     init 
+     (accumulate opt ( opt (car sequence) init ) (cdr sequence))
+     )
+  )
+; get all the ordered combination 
+(define (all-comb n)
+  (accumulate append null
+             (map (lambda(i) (map (lambda(j) (list j i) ) (enumerate-interval 1 (- i 1)))) (enumerate-interval 1 n)
+              )           
+  ))
+;; the combination of mapping and accumulating is common so we abstract it out 
+(define (flatmap proc seq)
+  (accumulate append null (map proc seq)))
+;;  rewrite the method above 
+(flatmap  (lambda (i) (map (lambda (j) (list j i)) (enumerate-interval 1 (- i 1)))) (enumerate-interval 1 7))
+
+(define (all-pairs n)
+  (flatmap  (lambda (i) (map (lambda (j) (list j i)) (enumerate-interval 1 (- i 1)))) (enumerate-interval 1 n))
+)
+
+(define (prime?helper a x)
+  ( not (= (modulo x a) 0)
+   ))
+(define (check-result seq)
+  (define (helper result seq)
+    (if (null? seq)
+        result
+        (helper (and result (car seq))
+                (cdr seq))
+        ))
+    (helper true seq)
+    )
+
+(define (prime? x)
+  (check-result (map (lambda(i) (prime?helper i x)) (enumerate-interval 2 (round(sqrt x)))))
+  )
+; filter, see if the pair sum is prime
+(define (prime-sum? pair)
+  (prime? ( + ( car pair) (car (cdr pair))))
+  )
+; list pair and sum 
+(define (make-pair-sum pair)
+  (list (car pair ) ( car(cdr pair)) (+ (car pair) (car( cdr pair))))
+  )
+
+(define (prime-sum-pairs n)
+  (map make-pair-sum 
+        (filter prime-sum? 
+                (all-pairs n))))
+
+(prime-sum-pairs 6)

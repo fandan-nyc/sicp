@@ -1,0 +1,40 @@
+#lang racket
+(require racket/trace)
+
+; fold left and fold right 
+
+; fold left means, we combine the last element with the result of all the elements 
+; standing in front of it. 
+
+; fold right means, we combine the first element with the result of the rest 
+(define (accumulate opt init sequence)
+  (if ( null? sequence)
+      init
+      (accumulate opt (opt (car sequence) init) (cdr sequence))
+      )
+  )
+(trace accumulate)
+(accumulate list null (list 1 2 3))
+; ( 3 ( 2 ( 1 ())))
+; so accumulate is fold-right, as it combines the first element with the result of the rest
+; in our case, init is used at last and the last element 3 should be used first
+
+(define (fold-right opt init sequence)
+  (accumulate opt init sequence))
+
+; 
+(define (fold-left opt init sequence)
+  (define (iter result rest)
+    (if (null? rest)
+        result 
+        (iter (opt result (car rest))
+              (cdr rest)
+              )
+        ))
+    (iter init sequence)
+    )
+(fold-left list null ( list 1 2 3 ))
+
+(fold-right / 1 (list 1 2 3)) ;  3/2
+(fold-left  / 1 (list 1 2 3)) ; 1/6
+

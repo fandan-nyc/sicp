@@ -1,0 +1,35 @@
+#lang racket
+(require racket/trace)
+; 2.39 use fold right and fold left for reverse
+(define (accumulate opt init sequence)
+  (if ( null? sequence)
+      init
+      (accumulate opt (opt (car sequence) init) (cdr sequence))
+      )
+  )
+
+(define (fold-right opt init sequence)
+  (accumulate opt init sequence))
+
+(define (fold-left opt init sequence)
+  (define (iter result rest)
+    (if (null? rest)
+        result 
+        (iter (opt result (car rest))
+              (cdr rest)
+              )
+        ))
+    (iter init sequence)
+    )
+
+(define (reverse sequence)
+  (fold-right (lambda (x y) 
+                (cons x y)
+                ) null sequence )
+  )
+(reverse (list 1 2 3))
+(define (reverse-1 sequence)
+  (fold-left (lambda (x y)
+               (cons  y x)) null sequence)
+  )
+(reverse-1 (list 1 2 3))

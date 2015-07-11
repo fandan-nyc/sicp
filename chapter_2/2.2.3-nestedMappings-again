@@ -1,0 +1,49 @@
+
+; nested mapping 
+; given positive integer n, for each positive interger i <= n, get all the ordered pairs (j, i) where 
+; 1 <= j < i <= n, that j + i is a prime
+
+; prepare funcs
+; accumulate
+(define (accumulate opt init seq)
+  (if (null? seq)
+      init
+      (accumulate opt (opt init (car seq)) (cdr seq))
+      )
+  )
+; enumerate-interval
+(define (enumerate-interval a n)
+  (define (helper result rest)
+    (if (<  rest  a )
+        result 
+        (helper (cons  rest result) (- rest 1))
+        )
+    )
+  (helper null n)
+  )
+; get all pairs
+(define (all-pairs n)
+  (accumulate append null (map (lambda(i) (map (lambda(j) (list j i)) (enumerate-interval 1 (- i 1)))) (enumerate-interval 1 n))
+  ))
+; is-prime?
+; prime-helper: get the modulo n i for all i >= 2 and i <= round(sqrt n)
+(define (prime-helper? n)
+  (map (lambda(i) (not (= (modulo n i) 0))) (enumerate-interval 2 (round(sqrt n)))))
+
+(define (prime? n)
+ (accumulate (lambda(i j) (and i j)) #t (prime-helper? n)))
+
+(define (pair-sum pair)
+  (+ (car pair) (car (cdr pair))))
+(define (prime-sum? pair)
+  (prime? (pair-sum pair))
+  )
+
+(define (pair-and-sum pair) 
+  (list (car pair) (car (cdr pair))  (pair-sum pair) )
+  )
+
+(define (all-prime-sum-pairs n)
+  (map pair-and-sum (filter prime-sum? (all-pairs n)))
+  )
+(all-prime-sum-pairs 10)

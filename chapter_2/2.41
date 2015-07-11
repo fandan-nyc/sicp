@@ -1,0 +1,47 @@
+#lang racket
+; nested mapping 
+; given positive integer n, for each positive interger i <= n, get all the ordered pairs (j, i) where 
+; 1 <= j < i <= n, that j + i is a prime
+
+; prepare funcs
+; accumulate
+(define (accumulate opt init seq)
+  (if (null? seq)
+      init
+      (accumulate opt (opt init (car seq)) (cdr seq))
+      )
+  )
+; enumerate-interval
+(define (enumerate-interval a n)
+  (define (helper result rest)
+    (if (<  rest  a )
+        result 
+        (helper (cons  rest result) (- rest 1))
+        )
+    )
+  (helper null n)
+  )
+; get all pairs
+(define (all-triple-pairs n)
+(accumulate append null (accumulate append null (map (lambda(i) (map (lambda(j) (map (lambda(k) (list k j i))(enumerate-interval 1 (- j 1)))) (enumerate-interval 2 (- i 1)))) (enumerate-interval 3 n))
+  )))
+
+(define (check-sum-s pair s)
+  (= s ( accumulate + 0 pair))
+  )
+(define (list-pair-sum s)
+  (list (car s) (cadr s) (cadr (cdr s)) (accumulate + 0 s))
+  )
+(define (all-pairs-sum-equal-s s n)
+  (map list-pair-sum (filter (lambda(x)(check-sum-s x s)) (all-triple-pairs n))))
+(all-pairs-sum-equal-s 20 10)
+#|
+'((5 7 8 20)
+  (5 6 9 20)
+  (4 7 9 20)
+  (3 8 9 20)
+  (4 6 10 20)
+  (3 7 10 20)
+  (2 8 10 20)
+  (1 9 10 20))
+|#

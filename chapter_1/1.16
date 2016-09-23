@@ -1,18 +1,69 @@
-; fast square 
-(require racket/trace)
-(define (fast-square x pow)
-  (define (square x) 
-    (* x x ))
-  (define (iseven pow)
-     ( even? pow ))
-  ( cond (( = pow 1) x)
-          ( (iseven pow) (fast-square (square x) (/ pow 2)))
-          ( (* x ( fast-square x ( - pow 1)))))) 
+#lang racket
 
-(fast-square 2 1)
-(fast-square 3 2)
-(fast-square 2 4)
-(fast-square 2 5)
-(fast-square 3 3)
+(define (square x)
+  (* x x)
+  )
+
+(define (testPowerOfTwo func)
+ (for ([a 10])
+        (display (func 2 a))
+        (display '" ")
+    )
+)
+  
+
+(define (expo-recur a b)
+  (if (= b 0)
+       1
+       (* a (expo-recur a (- b 1))))
+  )
+;(testPowerOfTwo expo-recur)
+#|
+(expo-recur 2 0)
+(expo-recur 2 1)
+(expo-recur 2 2)
+(expo-recur 2 3)
+(expo-recur 2 4)
+(expo-recur 2 5)
+(expo-recur 2 6) |#
+
+(define (fast-expo-recur a b)
+  (cond ((= b 0) 1)
+        ((even? b) (square (fast-expo-recur a (/ b 2))))
+        (else (* a (fast-expo-recur a (- b 1))))
+        )
+  )
+#|
+(fast-expo-recur 2 0)
+(fast-expo-recur 2 1)
+(fast-expo-recur 2 2)
+(fast-expo-recur 2 3)
+(fast-expo-recur 2 4)
+(fast-expo-recur 2 5)
+(fast-expo-recur 2 6)|#
+
+(define (expo-iter a b)
+  (define (expo-helper a b c)
+    (if (= b 0) 
+        c
+        (expo-helper a (- b 1) (* c a))
+     )
+    )
+  (expo-helper a b 1)
+)
+;(testPowerOfTwo expo-iter)
+
+(define (fast-expo-iter a b)
+  (define (helper a b c)
+    (cond ((= b 0) c)
+          ((even? b) (helper (square a) (/ b 2) c))
+          (else (helper a (- b 1 ) (* c a)))
+          )
+  )
+  (helper a b 1)
+  )
+
+;(testPowerOfTwo fast-expo-iter)
+
 
 

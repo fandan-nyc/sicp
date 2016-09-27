@@ -27,6 +27,24 @@
   (lambda (x) ( / ( + (f x) (f (+ x dx)) (f (- x dx))) 3.0) )
   )
 
+
+;; this is wrong
 (define (n-fold-smooth f n)
  (repeat-iter (smooth f) n)
   )
+  
+;; you should not repeat the (smooth f)
+;; you should do ((repeat smooth n) f)
+
+
+
+(define (n-fold-func f n)
+  ((repeat-iter smooth n) f))
+
+
+;; to test
+((n-fold-func (lambda (x) (+ 1 x)) 10) 10)
+
+
+
+

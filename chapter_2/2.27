@@ -26,3 +26,10 @@
                (list (deep-reverse (car x)))) 
        x)) 
 (deep-reverse (list 1 2 3 (list 7 8 9)))
+
+;; this is the most readable one. but not ideal
+(define (deep-reverse-2 x)
+  (if (pair? x)
+      (reverse (map deep-reverse-2 x))
+      x)
+  )

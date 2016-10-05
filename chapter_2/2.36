@@ -1,20 +1,26 @@
 
 ;2.36 accumulate-n
-(define (accumulate op init sequence)
+
+(define (accumulate init op sequence)
   (if(null? sequence)
      init
-     (op (car sequence) (accumulate op init (cdr sequence)))
+     (op (car sequence) (accumulate init op (cdr sequence)))
      )
+)
+
+
+(define (accumulate-n op init sequence)
+  (if (null? (car sequence))
+      null
+      (cons (accumulate    init op  (map (lambda(x) (car x)) sequence))
+            (accumulate-n   op init (map (lambda(x) (cdr x)) sequence))      
+      ))
   )
 
-(define (accumulate-n opt init sequence)
-  ( if (null?  sequence)
-       null
-       (cons (accumulate opt init (car sequence))
-             (accumulate-n opt init (cdr sequence))
-              )
-       )
-  )
+(define data (list (list 1 2 3) (list 4 5 6) (list 7 8 9)))
+;(map (lambda (x) (cdr x)) data) 
+
+(accumulate-n + 0 data)
 
 (accumulate-n + 0 (list (list 1 2 3) (list 4 5 6) (list 7 8 9)))
 

@@ -27,9 +27,39 @@
                 (cons x y)
                 ) null sequence )
   )
+  
 (reverse (list 1 2 3))
 (define (reverse-1 sequence)
   (fold-left (lambda (x y)
                (cons  y x)) null sequence)
   )
 (reverse-1 (list 1 2 3))
+
+;;;; modified on Oct 5th, 2016
+
+(define (fold-right op init sequence)
+  (if(null? sequence)
+     init
+     (op (car sequence) (fold-right op init (cdr sequence)))
+  )
+)
+
+(define (fold-left op init sequence)
+  (define (helper result rest)
+    (if (null? rest)
+        result
+        (helper (op result (car rest)) (cdr rest)))
+    )
+  (helper init sequence))
+  
+(define (reverse list)
+  (fold-left (lambda (x y)
+                   (cons y x))
+             null list))
+
+(define (reverse-2 list1)
+  (fold-right (lambda (newD reversed)
+                (append reversed (list newD))) null list1))
+;; here we depend on the fact that (append null abc) is still abc. 
+
+(reverse-2 (list 1))

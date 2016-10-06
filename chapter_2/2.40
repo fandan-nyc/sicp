@@ -1,0 +1,18 @@
+
+(define (enumerate-interval a b)
+  (if ( > a b)
+      null
+      (cons a (enumerate-interval (+ a 1) b))
+      )
+  )
+
+(define (flatmap proc seq)
+  (if (null? seq)
+      null
+      (append ( proc (car seq )) (flatmap proc (cdr seq))))
+  )
+
+(define (unique-pairs x)
+  (flatmap  (lambda(x) (map (lambda(t) (list t x)) (enumerate-interval 1 (- x 1)))) (enumerate-interval 1 10)))
+
+(unique-pairs 10)

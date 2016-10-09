@@ -1,0 +1,48 @@
+#lang racket
+
+
+(define (enumerate-interval m n)
+  (if (  > m n)
+      null
+      (cons m (enumerate-interval (+ m 1) n))
+      )
+  )
+
+;(enumerate-interval 2 10)
+(define (accumulate init op seq)
+  (if(null? seq)
+     init
+     (op (car seq) (accumulate init op (cdr seq)))
+  )
+)
+
+
+(define (flatmap proc seq)
+  (accumulate  null  append (map proc seq))
+  )
+
+
+(define (filter proc seq)
+  (cond ((null? seq) null)
+        ((proc (car seq)) (cons (car seq) (filter proc (cdr seq))))
+        (else (filter proc (cdr seq)))
+     )
+  )
+
+(define (triple m n) (flatmap (lambda(x) x) 
+         (flatmap (lambda(k) (map 
+                              (lambda(i) (map (lambda(j) (list  j i k))
+                                  (enumerate-interval m (- i 1)))) 
+                              (enumerate-interval m (- k 1))))
+         (enumerate-interval m n))))
+
+(define (sum x)
+  (accumulate 0 + x))
+
+
+(define (get-sum-s-m s m n)
+  (filter (lambda (x) ( = s (sum x)))
+          (triple m n )))
+
+(get-sum-s-m 22 1 10)
+

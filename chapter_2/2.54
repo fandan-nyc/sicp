@@ -1,0 +1,6 @@
+
+(define (equal-string? a b)
+  (cond ((and (pair? a ) (pair? b)) (and (equal-string? (car a) (car b))
+                                         (equal-string? (cdr a) (cdr b))))
+        (else (eq? a b)))
+  )

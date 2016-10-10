@@ -1,0 +1,9 @@
+```
+   5
+ /   \
+1     9
+ \   / \
+  3 7  11
+```
+
+the complexity is O(n) since we go through each element one time and one time only. 

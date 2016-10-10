@@ -1,0 +1,6 @@
+1. same, both in-order traversal 
+2. the first is T(n) = 2 * T(n/2) + O(n/2) 
+   we have the O(n/2) is the append which goes through the whole list
+   The second is T(n) = 2 * T (n/2)
+   so, T(n) = 2 * T(n/2) + O(n/2) = 2 * ( 2 * T(n/4) + O(n/4)) + O(n/2) = .... = O(n*log(n))
+   T(n) = 2*T(n/2) = O(n)

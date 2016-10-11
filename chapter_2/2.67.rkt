@@ -53,3 +53,5 @@
   (helper bits tree))
 
 (decode sample-message sample-tree)
+ ;; '(A D     A B   B   C     A) 
+

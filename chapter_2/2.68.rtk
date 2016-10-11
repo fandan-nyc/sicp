@@ -1,0 +1,13 @@
+
+(define (encode message tree)
+  (define (helper  message curr-tree)
+    (trace helper)
+    (cond ((null? message) null)
+          ((is-leaf curr-tree) (helper (cdr message) tree))
+          ((has-element (car message) (symbols (left-branch curr-tree)))
+           (cons  0 (helper message (left-branch curr-tree))))
+          (else (cons 1 ( helper message (right-branch curr-tree)))))
+    )
+  (helper message tree))
+
+(define x (encode '(A D A B B C A) sample-tree))

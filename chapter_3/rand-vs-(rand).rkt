@@ -57,7 +57,10 @@
 ((y 'generate)) ; 3
 ((x 'generate)) ;11
 
-
+;; rand-new represent the procedure 
+;; (rand) repre the procedure 
+;; so (define x rand) ; ( ((x) 'generate)) will always give you one; since each time (x) will generate new procedure 
+;; ( define x (rand)) ( (x 'generate)) will accumulate 
 
 
 

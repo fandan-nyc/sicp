@@ -38,6 +38,8 @@
 ; the above would not work because brand-new is dispatch 
 ; (rand-new) is (dispatch) which requires one input
  
+ 
+;; z and zz share the state, since they both point to the original procedure
 (define z rand-new)
 (define zz rand-new)
 ((z 'generate))  ; 1
@@ -47,6 +49,7 @@
 
 (display "\n\n\nrand with state\n")
 
+;; each (rand) generates a new procedure
 (define x (rand))
 (define y (rand))
 
@@ -57,10 +60,11 @@
 ((y 'generate)) ; 3
 ((x 'generate)) ;11
 
-;; rand-new represent the procedure 
+;; rand-new represent the procedure  ( define
 ;; (rand) repre the procedure 
 ;; so (define x rand) ; ( ((x) 'generate)) will always give you one; since each time (x) will generate new procedure 
 ;; ( define x (rand)) ( (x 'generate)) will accumulate 
+;; (define x rand-new); (define y rand-new) ;((x 'generate))  => 1  ( (y 'generate)) => 2; x and y point to the same thing
 
 
 
